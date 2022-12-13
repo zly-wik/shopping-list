@@ -17,5 +17,6 @@ pytest-django = "*"
 pytest-cov = "*"
 django-pyproject = "*"
 
+
 [requires]
 python_version = "3.10"
