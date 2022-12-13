@@ -15,7 +15,6 @@ psycopg2 = "*"
 pytest = "*"
 pytest-django = "*"
 flake8 = "*"
-tox = "*"
 pytest-cov = "*"
 django-pyproject = "*"
 
