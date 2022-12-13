@@ -14,7 +14,6 @@ psycopg2 = "*"
 [dev-packages]
 pytest = "*"
 pytest-django = "*"
-flake8 = "*"
 pytest-cov = "*"
 django-pyproject = "*"
 
