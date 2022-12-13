@@ -17,6 +17,7 @@ pytest-django = "*"
 flake8 = "*"
 tox = "*"
 pytest-cov = "*"
+django-pyproject = "*"
 
 [requires]
 python_version = "3.10"
