@@ -1,0 +1,23 @@
+version: "3"
+services:
+    db:
+        image: postgres
+        environment:
+            POSTGRES_DB: shoppinglist_db
+            POSTGRES_USER: dlugi
+            POSTGRES_PASSWORD: test_pass_123
+        volumes:
+            - pgdata:/var/lib/postgresql/data
+    api:
+        build:
+            context: .
+        ports:
+            - "8000:8000"
+            - "5432:5432"
+        volumes:
+            - ./:/shoppinglist
+        command: python manage.py runserver 0.0.0.0:8000
+        depends_on:
+            - db
+volumes:
+    pgdata:
