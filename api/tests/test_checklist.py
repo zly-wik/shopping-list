@@ -87,7 +87,7 @@ class TestRetrieveChecklist:
         response = client.get('/checklists/')
         
         assert response.status_code == status.HTTP_200_OK
-        assert response.data.__len__() == 2
+        assert response.data[0]['owner'] == profile.pk
         
     def test_if_user_is_authenticated_detail_owned_returns_200(self):
         user = baker.make(User, id=1)
