@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import UserProfile, Checklist
+from .models import UserProfile, Checklist, Item
 
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
@@ -14,4 +14,9 @@ class ChecklistSerializer(serializers.ModelSerializer):
         model = Checklist
         fields = ['id', 'title', 'owner']
         read_only_fields = ['owner']
-        
+
+
+class ItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Item
+        fields = ['id', 'text']

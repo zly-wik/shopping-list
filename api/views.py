@@ -4,8 +4,8 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
-from .models import UserProfile, Checklist
-from .serializers import UserProfileSerializer, ChecklistSerializer
+from .models import UserProfile, Checklist, Item
+from .serializers import UserProfileSerializer, ChecklistSerializer, ItemSerializer
 
 class UserProfileViewSet(GenericViewSet):
     permission_classes = [IsAuthenticated]
@@ -42,3 +42,17 @@ class ChecklistViewSet(ModelViewSet):
     def perform_create(self, serializer):
         owner = UserProfile.objects.filter(user=self.request.user).first()
         serializer.save(owner=owner)
+        
+        
+class ItemViewSet(ModelViewSet):
+    serializer_class = ItemSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        if 'checklist_pk' in self.kwargs:
+            return Item.objects.select_related('checklist').filter(checklist__id=self.kwargs['checklist_pk'])
+        return None
+    
+    def perform_create(self, serializer):
+        checklist = Checklist.objects.get(id=self.kwargs['checklist_pk'])
+        serializer.save(checklist=checklist)
