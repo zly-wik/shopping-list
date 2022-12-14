@@ -60,3 +60,55 @@ class TestCreateChecklist:
         
         assert response.status_code == status.HTTP_201_CREATED
 
+
+@pytest.mark.django_db
+class TestRetrieveChecklist:
+    def test_if_user_is_anonymous_list_returns_401(self):
+        client = APIClient()
+        
+        response = client.get('/checklists/')
+        
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+        
+    def test_if_user_is_anonymous_detail_returns_401(self):
+        client = APIClient()
+        
+        response = client.get(f'/checklists/1/')
+        
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+        
+    def test_if_user_is_authenticated_list_owned_returns_200(self):
+        user = baker.make(User, id=1)
+        client = APIClient()
+        client.force_authenticate(user=user)
+        profile = UserProfile.objects.filter(user=user).first()
+        checklist = baker.make(Checklist, _quantity=2, owner=profile)
+        
+        response = client.get('/checklists/')
+        
+        assert response.status_code == status.HTTP_200_OK
+        assert response.data.__len__() == 2
+        
+    def test_if_user_is_authenticated_detail_owned_returns_200(self):
+        user = baker.make(User, id=1)
+        client = APIClient()
+        client.force_authenticate(user=user)
+        profile = UserProfile.objects.filter(user=user).first()
+        checklist = baker.make(Checklist, owner=profile)
+        
+        response = client.get(f'/checklists/{checklist.pk}/')
+        
+        assert response.status_code == status.HTTP_200_OK
+        assert response.data['owner'] == profile.pk
+        
+    def test_if_user_is_authenticated_detail_not_owned_returns_403(self):
+        user = baker.make(User, id=1)
+        client = APIClient()
+        client.force_authenticate(user={})
+        profile = UserProfile.objects.filter(user=user).first()
+        checklist = baker.make(Checklist, owner=profile)
+        
+        response = client.get(f'/checklists/{checklist.pk}/')
+        
+        assert response.status_code == status.HTTP_403_FORBIDDEN
+
