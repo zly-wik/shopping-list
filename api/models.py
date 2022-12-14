@@ -20,7 +20,14 @@ class UserProfile(models.Model):
 class Checklist(models.Model):
     title = models.CharField(max_length=30)
     owner = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='checklists')
-        
+    
+    def __str__(self) -> str:
+        return self.title
+    
 class Item(models.Model):
     text = models.CharField(max_length=30)
     checklist = models.ForeignKey(Checklist, on_delete=models.CASCADE, related_name='items')
+    done = models.BooleanField(default=False)
+    
+    def __str__(self) -> str:
+        return ('V' if self.done else 'X') + ' ' + self.text

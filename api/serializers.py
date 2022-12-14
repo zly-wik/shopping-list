@@ -10,13 +10,14 @@ class UserProfileSerializer(serializers.ModelSerializer):
         
 
 class ChecklistSerializer(serializers.ModelSerializer):
+    items = serializers.StringRelatedField(read_only=True, many=True)
     class Meta:
         model = Checklist
-        fields = ['id', 'title', 'owner']
+        fields = ['id', 'title', 'owner', 'items']
         read_only_fields = ['owner']
 
 
 class ItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Item
-        fields = ['id', 'text']
+        fields = ['id', 'text', 'done']
