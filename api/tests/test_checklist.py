@@ -144,8 +144,8 @@ class TestUpdateChecklist:
         profile = UserProfile.objects.filter(user=user).first()
         checklist = baker.make(Checklist, owner=profile)
         
-        response_put = client.put('/checklists/', data={'title': 'a'})
-        response_patch = client.patch('/checklists/', data={'title': 'a'})
+        response_put = client.put(f'/checklists/{checklist.pk}/', data={'title': 'a'})
+        response_patch = client.patch(f'/checklists/{checklist.pk}/', data={'title': 'a'})
         
         assert response_put.status_code == status.HTTP_403_FORBIDDEN
         assert response_patch.status_code == status.HTTP_403_FORBIDDEN
