@@ -92,7 +92,11 @@ DATABASES = {
     },
 }
 
-if os.environ.get('GITHUB_WORKFLOW'):
+""" 
+    If uses GitHub actions or if run outside of Docker
+    Used for test purposes only, for production use DATABASE settings above
+"""
+if DEBUG and (os.environ.get('GITHUB_WORKFLOW') or not os.environ.get('PYTHONUNBUFFERED')):
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
