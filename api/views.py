@@ -36,7 +36,7 @@ class ChecklistViewSet(ModelViewSet):
     
     def get_queryset(self):
         if self.request.user and self.request.user.is_authenticated:
-            return Checklist.objects.select_related('owner__user').filter(owner__user=self.request.user)
+            return Checklist.objects.prefetch_related('items').filter(owner__user=self.request.user)
         
         
     def perform_create(self, serializer):
