@@ -7,6 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from .models import UserProfile, Checklist, Item
 from .serializers import UserProfileSerializer, ChecklistSerializer, ItemSerializer
 
+
 class UserProfileViewSet(GenericViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = UserProfileSerializer
@@ -31,13 +32,30 @@ class UserProfileViewSet(GenericViewSet):
             
 
 class ChecklistViewSet(ModelViewSet):
+    queryset = None
     serializer_class = ChecklistSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
         if self.request.user and self.request.user.is_authenticated:
-            return Checklist.objects.prefetch_related('items').filter(owner__user=self.request.user)
-        
+            qs = Checklist.objects.select_related('owner').prefetch_related('items').filter(owner__user=self.request.user)
+            self.queryset = qs
+            return qs
+        return None
+    
+
+    def check_permissions(self, request):
+        if request.user and request.user.is_authenticated:
+            if request.method == 'POST':
+                qs = self.get_queryset()
+                if qs and qs.count() >= 3:
+                    profile_level = qs.first().owner.profile_level
+                    if profile_level == UserProfile.STANDARD:
+                        self.permission_denied(self.request, 'You have reached the checklists limit for your account type', 403)
+                    elif qs.count() >= 5 and profile_level == UserProfile.PREMIUM:
+                        self.permission_denied(self.request, 'You have reached the checklists limit for your account type', 403)
+        else:
+            self.permission_denied(self.request, 'You have to be logged in order to create checklist', 401)
         
     def perform_create(self, serializer):
         owner = UserProfile.objects.filter(user=self.request.user).first()

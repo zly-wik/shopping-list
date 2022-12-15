@@ -16,10 +16,11 @@ class TestCreateChecklist:
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
     
     # Not sure if 403 is good status code, permissions will allow to post up to 3 with standard and 5 with premium profile
-    @pytest.mark.skip
+    # @pytest.mark.skip
     def test_if_user_is_standard_checklist_limit_returns_403(self):
         user = baker.make(User, id=1)
-        profile = baker.make(UserProfile, id=1, user=user, profile_level=UserProfile.STANDARD)
+        profile = UserProfile.objects.filter(user=user).first()
+        profile.profile_level = UserProfile.STANDARD
         baker.make(Checklist, _quantity=3, owner=profile)
         client = APIClient()
         client.force_authenticate(user=user)
@@ -29,10 +30,11 @@ class TestCreateChecklist:
         assert response.status_code == status.HTTP_403_FORBIDDEN
     
     # Not sure if 403 is good status code, permissions will allow to post up to 3 with standard and 5 with premium profile
-    @pytest.mark.skip
+    # @pytest.mark.skip
     def test_if_user_is_premium_checklist_limit_returns_403(self):
         user = baker.make(User, id=1)
-        profile = baker.make(UserProfile, id=1, user=user, profile_level=UserProfile.PREMIUM)
+        profile = UserProfile.objects.filter(user=user).first()
+        profile.profile_level = UserProfile.PREMIUM
         baker.make(Checklist, _quantity=5, owner=profile)
         client = APIClient()
         client.force_authenticate(user=user)
@@ -43,7 +45,7 @@ class TestCreateChecklist:
         
     def test_if_user_is_authenticated_invalid_data_returns_400(self):
         user = baker.make(User, id=1)
-        # profile = baker.make(UserProfile, id=1, user=user, profile_level=UserProfile.PREMIUM)
+        # profile = baker.make(UserProfile, id=1, user=user, profile_level=UserProfile.PREMIUM, checklists={})
         client = APIClient()
         client.force_authenticate(user=user)
         
