@@ -13,7 +13,7 @@ class ChecklistSerializer(serializers.ModelSerializer):
     items = serializers.StringRelatedField(read_only=True, many=True)
     class Meta:
         model = Checklist
-        fields = ['id', 'title', 'owner', 'items']
+        fields = ['id', 'title', 'owner', 'background_image', 'items']
         read_only_fields = ['owner']
 
 
