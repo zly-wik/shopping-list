@@ -1,6 +1,8 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+from .validators import validate_background_image_size
+
 class User(AbstractUser):
     email = models.EmailField(unique=True)
     
@@ -20,6 +22,7 @@ class UserProfile(models.Model):
 class Checklist(models.Model):
     title = models.CharField(max_length=30)
     owner = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='checklists')
+    background_image = models.ImageField(upload_to='backgrounds', validators=[validate_background_image_size], blank=True, null=True)
     
     def __str__(self) -> str:
         return self.title
