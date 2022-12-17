@@ -167,3 +167,10 @@ SIMPLE_JWT = {
    'AUTH_HEADER_TYPES': ('JWT',),
    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
 }
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp4dev'
+EMAIL_PORT = 25
+DEFAULT_FROM_EMAIL='app@shopping.list'
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
