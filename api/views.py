@@ -1,3 +1,5 @@
+from django.core.mail import EmailMessage
+from django.http.response import HttpResponseRedirect
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 from rest_framework import mixins
 from rest_framework.decorators import action
@@ -6,7 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from .models import UserProfile, Checklist, Item
 from .serializers import UserProfileSerializer, ChecklistSerializer, ItemSerializer
-
+from .emails import format_email_checklist
 
 class UserProfileViewSet(GenericViewSet):
     permission_classes = [IsAuthenticated]
@@ -60,7 +62,18 @@ class ChecklistViewSet(ModelViewSet):
     def perform_create(self, serializer):
         owner = UserProfile.objects.filter(user=self.request.user).first()
         serializer.save(owner=owner)
+    
+    
+    @action(methods=['get'], detail=True, url_path=None)
+    def send_email(self, request, **kwargs):
+        qs = self.get_queryset().first()
+        checklist  = qs.title
+        items = qs.items
         
+        message = EmailMessage('checklist name', body=format_email_checklist(checklist, items), to=[request.user.email])
+        message.content_subtype = 'html'
+        message.send()
+        return HttpResponseRedirect('..')
         
 class ItemViewSet(ModelViewSet):
     serializer_class = ItemSerializer
