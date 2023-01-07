@@ -12,6 +12,7 @@ djangorestframework-simplejwt = "*"
 psycopg2 = "*"
 drf-nested-routers = "*"
 pillow = "*"
+gunicorn = "*"
 
 [dev-packages]
 pytest = "*"

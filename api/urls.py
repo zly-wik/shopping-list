@@ -1,3 +1,5 @@
+from django.views.generic import TemplateView
+from django.urls import path
 from rest_framework_nested import routers
 
 from .views import UserProfileViewSet, ChecklistViewSet, ItemViewSet

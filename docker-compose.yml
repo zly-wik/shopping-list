@@ -6,6 +6,8 @@ services:
             POSTGRES_DB: shoppinglist_db
             POSTGRES_USER: dlugi
             POSTGRES_PASSWORD: test_pass_123
+        env_file:
+            - ./.env.dev
         volumes:
             - pgdata:/var/lib/postgresql/data
     api:
@@ -15,6 +17,8 @@ services:
             - "8000:8000"
             - "5432:5432"
             # - "25:25"
+        env_file:
+            - ./.env.dev
         volumes:
             - ./:/shoppinglist
         command: python manage.py runserver 0.0.0.0:8000
