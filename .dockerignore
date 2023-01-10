@@ -1,0 +1,8 @@
+.github/
+.pytest_cache/
+frontend/
+
+.coverage
+pytest.ini
+README.md
+.gitignore
