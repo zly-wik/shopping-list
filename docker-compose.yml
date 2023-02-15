@@ -7,7 +7,7 @@ services:
             POSTGRES_USER: dlugi
             POSTGRES_PASSWORD: test_pass_123
         env_file:
-            - ./.env.dev
+            - ./.env.prod
         volumes:
             - pgdata:/var/lib/postgresql/data
     api:
@@ -18,10 +18,10 @@ services:
             - "5432:5432"
             # - "25:25"
         env_file:
-            - ./.env.dev
+            - ./.env.prod
         volumes:
             - ./:/shoppinglist
-        command: python manage.py runserver 0.0.0.0:8000
+        command: python manage.py runserver 0.0.0.0:8000 && python manage.py migrate
         depends_on:
             - db
     smtp4dev:

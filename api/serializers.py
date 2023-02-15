@@ -3,6 +3,7 @@ from rest_framework import serializers
 from .models import UserProfile, Checklist, Item
 
 class UserProfileSerializer(serializers.ModelSerializer):
+    user = serializers.SlugRelatedField(many=False, read_only=True, slug_field='email')
     class Meta:
         model = UserProfile
         fields = ['id', 'user', 'display_name', 'profile_level']

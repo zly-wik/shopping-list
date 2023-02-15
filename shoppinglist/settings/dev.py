@@ -18,7 +18,7 @@ DATABASES = {
         'NAME': 'shoppinglist_db',
         'USER': 'dlugi',
         'PASSWORD': 'test_pass_123',
-        'HOST': 'db',
+        'HOST': 'localhost',
         'PORT': 5432,
     },
 }

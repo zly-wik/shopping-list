@@ -15,7 +15,7 @@ class UserProfileViewSet(GenericViewSet):
     serializer_class = UserProfileSerializer
     
     def get_queryset(self):
-        return UserProfile.objects.filter(user=self.request.user)
+        return UserProfile.objects.prefetch_related('user').filter(user=self.request.user)
     
     @action(detail=False, methods=['get', 'put', 'patch'])
     def me(self, request, **kwargs):
