@@ -70,7 +70,7 @@ class ChecklistViewSet(ModelViewSet):
         checklist  = qs.title
         items = qs.items
         
-        message = EmailMessage('checklist name', body=format_email_checklist(checklist, items), to=[request.user.email])
+        message = EmailMessage(f'checklist "{checklist}"', body=format_email_checklist(checklist, items), to=[request.user.email])
         message.content_subtype = 'html'
         message.send()
         return HttpResponseRedirect('..')

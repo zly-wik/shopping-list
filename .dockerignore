@@ -1,0 +1,16 @@
+.github/
+.pytest_cache/
+media/
+
+.coverage
+.gitignore
+README.md
+
+
+.dockerignore
+Dockerfile
+docker-compose.yml
+.env.dev
+.env.prod
+Pipfile
+Pipfile.lock

@@ -3,11 +3,11 @@ from rest_framework import serializers
 from .models import UserProfile, Checklist, Item
 
 class UserProfileSerializer(serializers.ModelSerializer):
-    user = serializers.SlugRelatedField(many=False, read_only=True, slug_field='email')
+    email = serializers.SlugRelatedField(many=False, read_only=True, slug_field='user__email')
     class Meta:
         model = UserProfile
-        fields = ['id', 'user', 'display_name', 'profile_level']
-        read_only_fields = ['user']
+        fields = ['id', 'user', 'email', 'display_name', 'profile_level']
+        read_only_fields = ['user', 'email']
         
 
 class ChecklistSerializer(serializers.ModelSerializer):

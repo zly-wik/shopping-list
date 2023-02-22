@@ -7,3 +7,6 @@ __pycache__/
 
 # Media files
 media/
+
+.env.prod
+docker-compose.prod.yml
