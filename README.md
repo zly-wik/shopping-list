@@ -2,7 +2,11 @@
 
 ## Overview:
 
-Web app that allows users to create checklists and add items to them.
+Web app that helps users create private 
+shopping lists. Project is well-tested and has 
+**96% tests coverage**. Backend is written with 
+**Django** and DRF for REST API. Everything is 
+configured as single docker-compose. 
 
 ## Technical overview:
 
